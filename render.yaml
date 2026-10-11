@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: retro-stock-game
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: retro-stock-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: TRUST_PROXY
+        value: "1"
+      - key: EVENT_ADMIN_KEY
+        generateValue: true
+databases:
+  - name: retro-stock-db
+    plan: free
+    databaseName: retrostock
+    user: retrostock
